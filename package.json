@@ -34,12 +34,15 @@
     "uuid": "^7.0.1"
   },
   "build": {
+    "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    },
     "appId": "simpleMusicPlayer",
     "icon": "build/icon.png",
     "win": {
       "target": [
         {
-          "target": "nsis-web",
+          "target": "nsis",
           "arch": [
             "x64",
             "ia32"
