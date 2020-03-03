@@ -6,12 +6,20 @@
   <title>本地播放器</title>
   <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/font-awesome/5.12.1/css/all.css" rel="stylesheet">
+  <style>
+  </style>
 </head>
 <body>
-  <div class="container mt-4">
+  <div class="container mt-4 mb-5">
     <h1 class="d-flex justify-content-center">本地播放器</h1>
     <button id="add-music-button" type="button" class="btn btn-primary btn-lg btn-block mt-4">添加歌曲到曲库</button>
-    <div id="list" class="mt-4"></div>
+    <div id="list" class="mt-4 pb-2"></div>
+  </div>
+  <div class="container fixed-bottom py-1 bg-white border-top">
+    <div id="status" class="row mb-1"></div>
+    <div class="row mb-1 progress">
+      <div id="bar" class="progress-bar bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
   </div>
 
   <script>

@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-const { $ } = require('../../util/index')
+const { $, convertDuration } = require('../../util/index')
 const musicAudio = new Audio()
 let allTracks = []
 let currentTrack = null
@@ -25,6 +25,29 @@ function renderHtml (arr) {
   }, '')
   const ulHtml = `<ul class="list-group btn-block mt-2 mb-4">${lisHtml}</ul>`
   dom.innerHTML = ulHtml
+}
+
+function renderPlayerHtml (fileName, duration) {
+  const status = $('#status')
+  const html = `
+    <div class="col font-weight-bold">
+      正在播放：${fileName}
+    </div>
+    <div class="col">
+      <span id="seeker">00:00</span> / ${convertDuration(duration)}
+    </div>
+  `
+  status.innerHTML = html
+}
+
+function renderPlayerProgressHtml (currentTime, duration) {
+  const seeker = $('#seeker')
+  seeker.innerHTML = convertDuration(currentTime)
+
+  const progress = Math.floor(currentTime / duration * 100)
+  const bar = $('#bar')
+  bar.innerHTML = progress + '%'
+  bar.style.width = progress + '%'
 }
 
 $('#add-music-button').addEventListener('click', () => {
@@ -74,4 +97,14 @@ $('#list').addEventListener('click', (e) => {
   if (id && del) {
     ipcRenderer.send('delete-track', id)
   }
+})
+
+musicAudio.addEventListener('loadedmetadata', () => {
+  // 开始渲染播放器状态
+  renderPlayerHtml(currentTrack.fileName, musicAudio.duration)
+  renderPlayerProgressHtml(musicAudio.currentTime, musicAudio.duration)
+})
+musicAudio.addEventListener('timeupdate', () => {
+  // 更新播放器状态
+  renderPlayerProgressHtml(musicAudio.currentTime, musicAudio.duration)
 })
