@@ -3,22 +3,21 @@ const uuidv4 = require('uuid/v4')
 const path = require('path')
 
 class DataStore extends Store {
-
-  constructor(setting) {
+  constructor (setting) {
     super(setting)
     this.tracks = this.get('tracks') || []
   }
 
-  saveTracks() {
+  saveTracks () {
     this.set('tracks', this.tracks)
     return this
   }
 
-  getTracks() {
+  getTracks () {
     return this.get('tracks') || []
   }
 
-  addTracks(tracks) {
+  addTracks (tracks) {
     const newTracks = tracks.map((track) => {
       return {
         id: uuidv4(),
@@ -31,6 +30,11 @@ class DataStore extends Store {
     })
 
     this.tracks = [...this.tracks, ...newTracks]
+    return this.saveTracks()
+  }
+
+  delTrack (trackId) {
+    this.tracks = this.tracks.filter((track) => track.id !== trackId)
     return this.saveTracks()
   }
 }

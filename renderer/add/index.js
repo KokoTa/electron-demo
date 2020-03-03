@@ -6,10 +6,10 @@ let filePaths = []
 function renderHtml (paths) {
   const dom = $('#list')
   const lisHtml = paths.reduce((str, p) => {
-    return str += ` <li class="list-group-item">${path.basename(p)}</li>`
+    const newStr = str + ` <li class="list-group-item">${path.basename(p)}</li>`
+    return newStr
   }, '')
   const ulHtml = `<ul class="list-group btn-block mt-2">${lisHtml}</ul>`
-  console.log(ulHtml)
   dom.innerHTML = ulHtml
 }
 
@@ -25,5 +25,9 @@ $('#select-music-button').addEventListener('click', () => {
 })
 
 $('#add-music-button').addEventListener('click', () => {
-  ipcRenderer.send('add-tracks', filePaths)
+  if (filePaths.length) {
+    ipcRenderer.send('add-tracks', filePaths)
+  } else {
+    alert('还没有选择音乐噢~')
+  }
 })

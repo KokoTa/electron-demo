@@ -25,12 +25,17 @@ class AppWindow extends BrowserWindow {
 
 app.on('ready', () => {
   const mainWindow = new AppWindow({}, './renderer/index/index.html')
+  let addWindow
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('get-tracks', store.getTracks())
+  })
 
   ipcMain.on('add-music-window', () => {
-    const addWindow = new AppWindow({
+    addWindow = new AppWindow({
       width: 500,
-      height: 400,
-      parent: mainWindow
+      height: 400
+      // parent: mainWindow
     }, './renderer/add/index.html')
   })
 
@@ -55,6 +60,12 @@ app.on('ready', () => {
 
   ipcMain.on('add-tracks', (e, tracks) => {
     const currentTracks = store.addTracks(tracks).getTracks()
-    console.log(currentTracks)
+    addWindow.close()
+    mainWindow.webContents.send('get-tracks', currentTracks)
+  })
+
+  ipcMain.on('delete-track', (e, trackId) => {
+    const currentTracks = store.delTrack(trackId).getTracks()
+    mainWindow.webContents.send('get-tracks', currentTracks)
   })
 })
