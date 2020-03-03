@@ -1,11 +1,13 @@
 {
-  "name": "electron-quick-start",
+  "name": "audio-player",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "simple audio player",
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "chcp 65001 && nodemon --watch ./ --exec electron ."
+    "start": "chcp 65001 && nodemon --watch ./ --exec electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,16 +20,32 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
+    "electron": "^8.0.2",
+    "electron-builder": "^22.3.2",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "electron": "^8.0.2"
+    "eslint-plugin-standard": "^4.0.1"
   },
   "dependencies": {
     "electron-store": "^5.1.1",
     "uuid": "^7.0.1"
+  },
+  "build": {
+    "appId": "simpleMusicPlayer",
+    "icon": "build/icon.png",
+    "win": {
+      "target": [
+        {
+          "target": "nsis-web",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
   }
 }
